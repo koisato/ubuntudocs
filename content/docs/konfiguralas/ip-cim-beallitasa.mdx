@@ -1,0 +1,81 @@
+---
+title: IP cím beállítása
+description: Statikus IP konfiguráció
+---
+## IP cím beállítása
+
+Mivel a telepítőben nem adtunk meg IP címet vagy DHCP-t, ezt most fogjuk megcsinálni.
+
+- Először is kapcsoljuk fel az interface-t:
+
+```bash
+sudo ip link set enp0s3 up
+```
+- Ez után hozzuk létre a Netplan configot:
+
+```bash
+sudo nano /etc/netplan/01-netcfg.yaml
+```
+- Ebbe a fájlba amit megnyitottunk, írjuk a következőket (a saját IP címmel amit kaptunk):
+
+```bash
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp0s3:
+      dhcp4: false
+      addresses:
+        - 192.168.1.108/24
+      routes:
+        - to: default
+          via: 192.168.1.1
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 1.1.1.1
+```
+
+- Mentsük el a configot, majd alkalmazzuk a beállításokat:
+
+```bash
+sudo netplan apply
+```
+- az "ip a" parancsra megjelennek a beállítások, ellenőrizzük őket.
+
+![ipa](/images/Screenshot%202026-05-28%20180927.png)
+
+---
+
+## Ping tesztek
+
+### VM --> Host
+
+```bash
+peti@katonapeter:~$ ping -c 4 192.168.1.20
+PING 192.168.1.20 (192.168.1.20) 56(84) bytes of data.
+64 bytes from 192.168.1.20: icmp_seq=1 ttl=128 time=0.352 ms
+64 bytes from 192.168.1.20: icmp_seq=2 ttl=128 time=0.620 ms
+64 bytes from 192.168.1.20: icmp_seq=3 ttl=128 time=1.79 ms
+64 bytes from 192.168.1.20: icmp_seq=4 ttl=128 time=0.368 ms
+--- 192.168.1.20 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 10590ms
+rtt min/avg/max/mdev = 0.352/0.603/1.79/0.493 ms
+```
+
+### Host --> VM
+
+```bash
+ping 192.168.1.108
+
+Pinging 192.168.1.108 with 32 bytes of data:
+Reply from 192.168.1.108: bytes=32 time<1ms TTL=64
+Reply from 192.168.1.108: bytes=32 time<1ms TTL=64
+Reply from 192.168.1.108: bytes=32 time<1ms TTL=64
+Reply from 192.168.1.108: bytes=32 time<1ms TTL=64
+
+Ping statistics for 192.168.1.108:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+```

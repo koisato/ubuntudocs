@@ -1,0 +1,52 @@
+---
+title: SSH
+description: SSH elérés konfigurálása
+---
+
+## OpenSSH telepítése
+
+```bash
+sudo apt install openssh-server -y
+```
+
+---
+
+## Indítás
+
+```bash
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
+
+---
+
+## Ellenőrzés
+
+- Ellenőrizzük hogy fut-e az SSH.
+
+```bash
+systemctl status ssh
+```
+
+- Ha minden rendben, ezt kell látnunk:
+
+![md](/images/Screenshot%202026-05-28%20181050.png)
+
+- Ellenőrizzük, hogy "figyel"-e a 22-es porton. Ha "tcp LISTEN", akkor jó.
+
+```bash
+ss -tulpn | grep :22
+```
+![teszt](/images/Screenshot%202026-05-28%20181333.png)
+
+---
+
+## Tesztelés gazdagépen
+
+- nyissunk egy terminal-t a gazdagépen, majd próbáljunk felcsatlakozni:
+
+```bash
+ssh peti@192.168.1.108
+```
+
+![csatlakozas](/images/Screenshot%202026-05-28%20163057.png)
