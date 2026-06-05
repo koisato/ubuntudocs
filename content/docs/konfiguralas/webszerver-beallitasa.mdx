@@ -41,6 +41,10 @@ echo '<h1>Szerver megy szia</h1>' | sudo tee /var/www/html/index.html
 
 - Ettől független ugyanúgy érdemes tudni a rendes módját is.
 
+<Callout>
+ Az echo kiírt egy szöveget, a | továbbította, a tee pedig beírtaa fileba.
+</Callout>
+
 ---
 
 ## BIND9 telepítése
@@ -85,6 +89,10 @@ $TTL    604800
 @       IN      A       192.168.1.108
 www     IN      A       192.168.1.108
 ```
+
+<Callout>
+ Ahol nekem a katonapeter.tk van, ott egyértelműen mindenki a sajátját írja be. A fájlban a localhost-ot cseréljük ki a saját domainünkre.
+</Callout>
 
 ---
 

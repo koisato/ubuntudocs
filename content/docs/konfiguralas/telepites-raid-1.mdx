@@ -3,6 +3,30 @@ title: Telepítés RAID 1-el
 description: Az Ubuntu és a RAID 1 telepítési lépései
 ---
 
+## Szoftveres vagy Hardveres RAID?
+- __Szoftveres RAID__-nél teljesen az operációs rendszer kezeli a RAID-et, Linuxnál ez mdadm (Multiple Disk and Device Management)
+    - Költségmentes, nem kell neki extra hardver, de erőforrás-igényesebb (nagy a terhelés a processzoron)
+- __Hardveres RAID__-nél a meghajtók egy dedikált RAID vezérlőhöz csatlakoznak (PCIe kártya / alaplapi chip)
+    - Drágább, de nincs akkora erőforrás igénye (nem terheli a processzort)
+
+- Én a feladatban a Szoftveres megoldást választottam.
+
+## RAID fajták közti különbség
+
+- RAID 0:
+    - Minimum 2 lemez szükséges. Nincs hibatűső képesség viszont nagyon gyors. Ha az egyik lemez meghal. minden adat elveszik. 2db 1TB-os lemez -> 2TB tárhely.
+
+- RAID 1 (Mirror): 
+    - Minimum 2 lemez szükséges. Az adatok tükrözve kerülnek fel minden lemezre, tehát minden adat duplán van tárolva. Ha az egyik lemez meghal, a másik még mindig
+    rendelkezésre áll. 2db 1TB-os lemez -> 1TB tárhely. (Fele kapacitás)
+
+- RAID 10:
+    - Minimum 4 lemez szükséges. Először RAID 1 párokat alkot, majd ezeket köti össze. Gyors és biztonságos, remek hibatűrő képességgel. 4db 1TB-os lemez -> 2TB tárhely.
+    (Fele kapacitás)
+
+- A feladatban a RAID 1-et használtam.
+
+
 ## Telepítés
 - Indítsuk el a VM-et.
 (Mivel Ubuntut telepíteni nem egy nagy tudomány (felhasználónév, saját adatok, stb..) ezért ezt át is ugranám.)
@@ -59,6 +83,13 @@ Fontos, hogy a RAID Levelnél az "1 (mirrored) lehetőséget válasszuk.
 
 ---
 
+<Callout>
+  Ha telepítés közben végezzük el a RAID-et, az egész rendszer a RAID tömbön van, az ubuntu ide települ, erről bootol.
+  Ha utólag állítjuk be a RAID kapcsolatot, akkor új lemezeket és egy RAID 1 tömböt kellene létrehozni, formázni és felcsatolni.
+</Callout>
+
+---
+
 ## Tesztelés:
 
  - Miután bejelentkeztünk, adjuk ki a következő commandot.
@@ -72,3 +103,4 @@ cat /proc/mdstat
 - Ha mind a 3 md mellett azt látjuk, hogy "... active raid1" valamint (UU) akkor jól dolgoztunk.
 
 ![jo](/images/Screenshot%202026-05-28%20180715.png)
+

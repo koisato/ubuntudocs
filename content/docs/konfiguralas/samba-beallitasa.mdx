@@ -17,6 +17,11 @@ sudo apt install samba -y
 sudo mkdir -p /srv/samba/share
 ```
 
+<Callout>
+  Való igaz, egyszerűbb lett volna a felhasználó saját /home mappájában létrehozni a mappát, de ezt akkor még nem tudtam.
+  Itt nem kellett volna külön tulajdonost és hozzáféréseket beállítani.
+</Callout>
+
 ---
 
 ## Jogosultságok megadása:
@@ -92,7 +97,7 @@ systemctl status smbd
 \\192.168.1.108\share
 ```
 
-- Kérni fogja a megadott felhasználónevet és a jelszót. Ha beléptünk, megjelenik a mappa.
+- Kérni fogja a felhasználó létrehozásakor megadott felhasználónevet és a jelszót. Ha beléptünk, megjelenik a mappa.
 
 ![userjo](/images/Screenshot%202026-05-28%20190136.png)
 
