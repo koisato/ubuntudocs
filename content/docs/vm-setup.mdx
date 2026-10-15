@@ -1,0 +1,24 @@
+---
+title: VM settings
+description: Virtual machine settings
+---
+
+## The ISO
+I downloaded the Ubuntu 24.04 LTS ISO from the official Ubuntu website and imported it into Oracle VM VirtualBox,
+which is what I'll be working in.
+
+---
+
+## Virtual machine settings:
+- Operating system: Linux (Ubuntu 64-bit)
+- CPU cores: 8
+- RAM: 8GB (8192MB)
+- Network adapter: Bridged adapter
+- Hard drives:
+  - 2 × 25GB
+
+## Why a bridged adapter, when school uses NAT and an internal network?
+- I used a bridged adapter because this way the host can reach my VM directly on my own network. It's as if it were a separate physical machine on the network.
+It has internet access too.
+- At school we use NAT and an internal network because NAT is needed for internet access, since the internal network adapter can't see out to the internet. This is useful because
+ during lab work the network can't see out to the school network.

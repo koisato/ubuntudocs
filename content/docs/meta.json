@@ -1,9 +1,9 @@
 {
-  "title": "Dokumentáció",
+  "title": "Documentation",
   "pages": [
     "index",
-    "test",
-    "konfiguralas",
-    "forrasok"
+    "vm-setup",
+    "configuration",
+    "sources"
   ]
 }

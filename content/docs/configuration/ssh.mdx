@@ -1,0 +1,52 @@
+---
+title: SSH
+description: Configuring SSH access
+---
+
+## Installing OpenSSH
+
+```bash
+sudo apt install openssh-server -y
+```
+
+---
+
+## Starting it
+
+```bash
+sudo systemctl enable ssh
+sudo systemctl start ssh
+```
+
+---
+
+## Checking
+
+- Check that SSH is running.
+
+```bash
+systemctl status ssh
+```
+
+- If everything is fine, you should see this:
+
+![SSH status](/images/Screenshot%202026-05-28%20181050.png)
+
+- Check that it's "listening" on port 22. If it says "tcp LISTEN", it's good.
+
+```bash
+ss -tulpn | grep :22
+```
+![Port check](/images/Screenshot%202026-05-28%20181333.png)
+
+---
+
+## Testing from the host
+
+- Open a terminal on the host, then try to connect:
+
+```bash
+ssh peti@192.168.1.108
+```
+
+![Connecting](/images/Screenshot%202026-05-28%20163057.png)

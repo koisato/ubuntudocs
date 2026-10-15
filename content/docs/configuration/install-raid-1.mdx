@@ -1,0 +1,105 @@
+---
+title: Installing with RAID 1
+description: Installation steps for Ubuntu and RAID 1
+---
+
+## Software or hardware RAID?
+- With __software RAID__ the operating system handles the RAID entirely. On Linux this is mdadm (Multiple Disk and Device Management)
+    - It's free and needs no extra hardware, but it uses more resources (more load on the CPU)
+- With __hardware RAID__ the drives connect to a dedicated RAID controller (a PCIe card / chip on the motherboard)
+    - More expensive, but it doesn't use as many resources (no load on the CPU)
+
+- For this assignment I chose the software solution.
+
+## The difference between RAID types
+
+- RAID 0:
+    - Needs at least 2 disks. No fault tolerance, but very fast. If one disk dies, all data is lost. 2 × 1TB disks -> 2TB of storage.
+
+- RAID 1 (Mirror):
+    - Needs at least 2 disks. Data is mirrored onto every disk, so everything is stored twice. If one disk dies, the other one is still
+    available. 2 × 1TB disks -> 1TB of storage. (Half the capacity)
+
+- RAID 10:
+    - Needs at least 4 disks. It first makes RAID 1 pairs, then joins them together. Fast and safe, with great fault tolerance. 4 × 1TB disks -> 2TB of storage.
+    (Half the capacity)
+
+- For this assignment I used RAID 1.
+
+
+## Installation
+- Start the VM.
+(Installing Ubuntu isn't exactly rocket science (username, personal details, etc.), so I'll skip that part.)
+
+- When you get to __Guided Storage Configuration__, choose "__Custom storage layout__".
+- Next comes the Storage Configuration screen. Here you can see the two hard drives we gave the VM.
+We'll split __both__ drives into 3 parts, so we create 3 partitions on each. Press Enter on "__Free Space__", then choose
+"__Add GPT Partition__".
+
+![Installer screen](/images/Screenshot%202026-05-28%20132737.png)
+
+---
+
+- We need to do this three times. First we create a 512MB partition, then a 4GB one, and finally one with the "remaining" space,
+like this:
+
+![Next step screen](/images/Screenshot%202026-05-28%20132851.png)
+
+---
+
+- Once that's done, you should see something like this.
+
+![Finished partitions](/images/Screenshot%202026-05-28%20133342.png)
+
+---
+
+- Next, choose "__Create software RAID (md)__". Here we'll pair up the partitions of the same size.
+It's important to pick "1 (mirrored)" as the RAID Level.
+
+![Pairing](/images/Screenshot%202026-05-28%20133539.png)
+
+---
+
+- When it's done, you should see this: 3 md devices have been created with RAID 1.
+
+![md](/images/Screenshot%202026-05-28%20133657.png)
+
+---
+
+- As the last step, we'll format the md devices.
+    - __Settings for the 512MB md:__
+        - Format: ext4
+        - Mount: /boot
+    - __Settings for the 4GB md:__
+        - Format: swap
+        - Mount: Leave unmounted
+    - __Settings for the third md:__
+        - Format: ext4
+        - Mount: /
+
+![Finished md](/images/Screenshot%202026-05-28%20134030.png)
+
+- That's RAID 1 set up. Finish the installer, then log in.
+
+---
+
+<Callout>
+  If you set up RAID during installation, the whole system lives on the RAID array: Ubuntu installs onto it and boots from it.
+  If you set up RAID afterwards, you'd have to add new disks and create, format and mount a RAID 1 array.
+</Callout>
+
+---
+
+## Testing:
+
+ - After logging in, run the following command.
+
+
+```bash
+cat /proc/mdstat
+```
+
+
+- If all 3 md devices show "... active raid1" and (UU), we did a good job.
+
+![Working](/images/Screenshot%202026-05-28%20180715.png)

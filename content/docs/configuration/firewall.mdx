@@ -1,0 +1,64 @@
+---
+title: Firewall
+description: Configuring the firewall
+---
+
+## Installing the firewall:
+
+- First we need to install the firewall. (It's most likely already on the server, but just in case it isn't, we start with this.)
+
+```bash
+sudo apt install ufw -y
+```
+
+---
+
+## Allowing ports
+
+- In my opinion it's worth opening the ports right at the start, so you don't have to deal with them later.
+For example, once the DNS config is done I can test it straight away without having to open a port first.
+
+- It's important to only run "sudo ufw enable" (coming up later) AFTER allowing SSH, otherwise you'll lock yourself out of SSH.
+
+### Allow SSH:
+
+```bash
+sudo ufw allow 22/tcp
+```
+
+### Allow Apache (http-https):
+
+```bash
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+```
+
+### Allow Samba:
+
+```bash
+sudo ufw allow 139,445/tcp
+```
+
+### Allow DNS (BIND9):
+
+```bash
+sudo ufw allow 53
+```
+
+---
+
+- After that, enable the firewall.
+
+```bash
+sudo ufw enable
+```
+
+---
+
+## Checking:
+
+```bash
+sudo ufw status verbose
+```
+
+![ufw status](/images/Screenshot%202026-05-28%20181521.png)

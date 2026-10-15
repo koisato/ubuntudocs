@@ -1,0 +1,106 @@
+---
+title: Samba
+description: Configuring a Samba share
+---
+
+## Installing Samba
+
+```bash
+sudo apt install samba -y
+```
+
+---
+
+## Creating the folder:
+
+```bash
+sudo mkdir -p /srv/samba/share
+```
+
+<Callout>
+  Admittedly, it would have been easier to create the folder in the user's own /home folder, but I didn't know that at the time.
+  That way I wouldn't have needed to set a separate owner and permissions.
+</Callout>
+
+---
+
+## Setting permissions:
+
+- 775 gives the owner full rights, the group too, and everyone else only read and execute rights. (rwx rwx r-x)
+
+```bash
+sudo chown peti:peti /srv/samba/share
+sudo chmod 0775 /srv/samba/share
+```
+
+---
+
+## Editing the Samba config file
+
+- First, open the file
+
+```bash
+sudo nano /etc/samba/smb.conf
+```
+
+- Then add this to the end:
+
+```bash
+[share]
+   path = /srv/samba/share
+   browseable = yes
+   writable = yes
+   read only = no
+```
+
+- Check the config. If there are no errors, we're good.
+
+```bash
+testparm
+```
+
+---
+
+## Creating a user
+
+- After this command the terminal will ask for a password. Enter it, confirm it, and the user is ready.
+
+```bash
+sudo smbpasswd -a peti
+```
+
+![User](/images/Screenshot%202026-05-28%20185221.png)
+
+---
+
+## Restarting and checking
+
+- Restart Samba
+
+```bash
+sudo systemctl restart smbd
+```
+
+- Check that it's running
+
+```bash
+systemctl status smbd
+```
+
+---
+
+## Testing
+
+- Type the following into the Windows Explorer address bar:
+
+```bash
+\192.168.1.108\share
+```
+
+- It will ask for the username and password you set when creating the user. Once you're logged in, the folder appears.
+
+![Logged in](/images/Screenshot%202026-05-28%20190136.png)
+
+- And after mapping it, you'll see it among your drives.
+
+![Mapped drive](/images/Screenshot%202026-05-28%20190450.png)

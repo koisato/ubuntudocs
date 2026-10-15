@@ -1,0 +1,129 @@
+---
+title: Web server and DNS
+description: Web server and DNS config
+---
+
+## Installing Apache2
+
+```bash
+sudo apt install apache2 -y
+```
+
+---
+
+## Making a web page
+
+- Go to the index.html file, delete its contents, then write a web page of a few lines.
+
+```bash
+sudo nano /var/www/html/index.html
+```
+
+After that, you should be able to reach the page in your browser at
+
+```bash
+http://192.168.1.108
+```
+
+![Web page](/images/Screenshot%202026-05-28%20165909.png)
+
+## Extra "trick"
+
+- If you don't want to go into the folder, open the file, delete its contents and do other terribly hard tasks like that (I'm lazy),
+you can also create the page with this single command. It writes a simple h1 into the file, and you can check it
+right away.
+
+```bash
+echo '<h1>Server is up, hi</h1>' | sudo tee /var/www/html/index.html
+```
+
+- Even so, it's worth knowing the normal way as well.
+
+<Callout>
+ echo printed some text, the | passed it on, and tee wrote it into the file.
+</Callout>
+
+---
+
+## Installing BIND9
+
+```bash
+sudo apt install bind9 bind9-utils -y
+```
+
+---
+
+## Adding and editing a zone
+
+- First, open the named.conf.local file, then add the following to the end:
+
+```bash
+sudo nano /etc/bind/named.conf.local
+```
+
+```bash
+zone "katonapeter.tk" {
+    type master;
+    file "/etc/bind/db.katonapeter.tk";
+};
+```
+
+---
+
+- Now edit the zone we created. Its contents should look like this (with your own domain, of course;
+if yours is different, use your own)
+
+```bash
+$TTL    604800
+@       IN      SOA     katonapeter.tk. root.katonapeter.tk. (
+                              2
+                         604800
+                          86400
+                        2419200
+                         604800 )
+
+@       IN      NS      katonapeter.tk.
+
+@       IN      A       192.168.1.108
+www     IN      A       192.168.1.108
+```
+
+<Callout>
+ Wherever I have katonapeter.tk, everyone obviously puts their own. In the file, replace localhost with your own domain.
+</Callout>
+
+---
+
+## Checks
+
+- Check the config. If the system gives no response to this command, the config is fine.
+
+```bash
+sudo named-checkconf
+```
+
+- Check the zone as well. If you get "OK" back, everything is perfect.
+
+```bash
+sudo named-checkzone katonapeter.tk /etc/bind/db.katonapeter.tk
+```
+
+---
+
+## Restarting DNS
+
+```bash
+sudo systemctl restart bind9
+```
+
+---
+
+## The final test
+
+```bash
+nslookup katonapeter.tk localhost
+```
+
+- If you get your IP address back, the job is done perfectly.
+
+![nslookup](/images/Screenshot%202026-05-28%20174319.png)

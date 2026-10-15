@@ -1,22 +1,22 @@
 ---
-title: IP cím beállítása
-description: Statikus IP konfiguráció
+title: Static IP address
+description: Static IP configuration
 ---
-## IP cím beállítása
+## Setting the IP address
 
-Mivel a telepítőben nem adtunk meg IP címet vagy DHCP-t, ezt most fogjuk megcsinálni.
+Since we didn't set an IP address or DHCP in the installer, we'll do it now.
 
-- Először is kapcsoljuk fel az interface-t:
+- First, bring the interface up:
 
 ```bash
 sudo ip link set enp0s3 up
 ```
-- Ez után hozzuk létre a Netplan configot:
+- Then create the Netplan config:
 
 ```bash
 sudo nano /etc/netplan/01-netcfg.yaml
 ```
-- Ebbe a fájlba amit megnyitottunk, írjuk a következőket (a saját IP címmel amit kaptunk):
+- Write the following into the file we just opened (with the IP address you were given):
 
 ```bash
 network:
@@ -35,18 +35,18 @@ network:
           - 192.168.1.108
 ```
 
-- Mentsük el a configot, majd alkalmazzuk a beállításokat:
+- Save the config, then apply the settings:
 
 ```bash
 sudo netplan apply
 ```
-- az "ip a" parancsra megjelennek a beállítások, ellenőrizzük őket.
+- The "ip a" command shows the settings, so check them.
 
-![ipa](/images/Screenshot%202026-05-28%20180927.png)
+![ip a](/images/Screenshot%202026-05-28%20180927.png)
 
 ---
 
-## Ping tesztek
+## Ping tests
 
 ### VM --> Host
 

@@ -1,0 +1,11 @@
+{
+  "title": "Configuration",
+  "pages": [
+    "install-raid-1",
+    "static-ip",
+    "ssh",
+    "firewall",
+    "samba",
+    "web-server-dns"
+  ]
+}
