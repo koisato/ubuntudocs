@@ -11,6 +11,13 @@ export default function HomePage() {
         </Link>{' '}
         to read the documentation.
       </p>
+      <p className="mt-6 text-sm text-fd-muted-foreground">
+        Docs template made by{' '}
+        <a href="https://fumadocs.dev" target="_blank" rel="noopener" className="underline">
+          Fumadocs
+        </a>
+        .
+      </p>
     </div>
   );
 }

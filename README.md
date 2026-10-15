@@ -15,7 +15,7 @@ Every step comes with the commands, screenshots and a test to check that it work
 
 ## Running the docs site
 
-The docs are built with [Next.js](https://nextjs.org) and [Fumadocs](https://fumadocs.dev). The pages live in `content/docs`.
+The docs site is built with [Next.js](https://nextjs.org), using the docs template made by [Fumadocs](https://fumadocs.dev) ([GitHub](https://github.com/fuma-nama/fumadocs)). The pages live in `content/docs`.
 
 ```bash
 npm install
